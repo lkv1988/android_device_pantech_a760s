@@ -1,5 +1,5 @@
 VENDOR=pantech
-DEVICE=ef39s
+DEVICE=ef33s
 OUTDIR=vendor/$VENDOR/$DEVICE
 MAKEFILE=../../../$OUTDIR/$DEVICE-vendor-blobs.mk
 

@@ -23,18 +23,18 @@
 # WARNING: This line must come *before* including the proprietary
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
-USE_CAMERA_STUB := true
+USE_CAMERA_STUB := false
 BOARD_PROVIDES_LIBRIL := true
 # inherit from common msm8660
 -include device/pantech/msm8660-common/BoardConfigCommon.mk
 
 # inherit from the proprietary version
--include vendor/pantech/ef39s/BoardConfigVendor.mk
+-include vendor/pantech/ef33s/BoardConfigVendor.mk
 
-TARGET_BOOTLOADER_BOARD_NAME := IM-A800S
+TARGET_BOOTLOADER_BOARD_NAME := IM-A760S
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := a800s,ef39s,IM-A800S
+TARGET_OTA_ASSERT_DEVICE := a760s,ef33s,IM-A760S
 
 # kernel
 BOARD_KERNEL_CMDLINE        := console=ttyHSL0,115200,n8 androidboot.hardware=qcom loglevel=0
@@ -42,8 +42,10 @@ BOARD_KERNEL_BASE           := 0x40200000
 BOARD_FORCE_RAMDISK_ADDRESS := 0x41500000
 BOARD_KERNEL_PAGESIZE       := 2048
 # Define Prebuilt kernel locations
-TARGET_PREBUILT_KERNEL      := device/pantech/ef39s/prebuilt/kernel
-
+TARGET_PREBUILT_KERNEL      := device/pantech/ef33s/kernel
+#TARGET_KERNEL_SOURCE		:= ~/android/kernel/3.0/IM-A760S_Kernel/kernel
+#TARGET_KERNEL_CONFIG		:= a760s_defconfig
+TARGET_PREBUILT_RECOVERY_KERNEL := device/pantech/ef33s/kernel
 # fs
 TARGET_USERIMAGES_USE_EXT4         := true
 BOARD_BOOTIMAGE_PARTITION_SIZE     := 10485760
@@ -57,7 +59,7 @@ BOARD_USES_GENLOCK           := true
 #BOARD_USE_LEGACY_TRACKPAD := true
 
 # FIXME: needs to be disabled for camera preview to work correctly
-TARGET_QCOM_HDMI_OUT := true
+#TARGET_QCOM_HDMI_OUT := true
 
 # Workaround for glitches while cropping bypass layers
 #TARGET_NO_BYPASS_CROPPING := true
@@ -87,7 +89,9 @@ TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/
 BOARD_SDCARD_DEVICE_PRIMARY   := /dev/block/mmcblk1p1
 BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk0p27
 BOARD_SDEXT_DEVICE            := /dev/block/mmcblk1p2
+
 # recovery
+#BOARD_TOUCH_RECOVERY	:= true
 BOARD_HAS_NO_SELECT_BUTTON     := true
 BOARD_HAS_NO_MISC_PARTITION    := true
 BOARD_USES_MMCUTILS            := true

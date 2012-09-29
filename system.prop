@@ -1,4 +1,4 @@
-# system.prop for SKY IM-A800s
+# system.prop for SKY IM-A760s
 #
 
 rild.libpath=/system/lib/libril-qc-qmi-1.so
@@ -60,7 +60,7 @@ persist.audio.vr.enable=false
 # 131072 is decimal for 0x20000 to report version 2
 ro.opengles.version=131072
 
-ro.sf.lcd_density=320
+ro.sf.lcd_density=240
 
 # notify vold we have internal and external sd
 ro.additionalmounts=/mnt/external_sd 

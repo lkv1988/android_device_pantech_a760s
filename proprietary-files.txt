@@ -3,11 +3,11 @@ bin/battery_charging
 bin/cnd
 bin/cpmgrif
 bin/geomagneticd
-bin/hdmid
+#bin/hdmid
 bin/pam_server
 bin/qcks
 bin/time_daemon
-bin/usb_serial_write
+#bin/usb_serial_write
 bin/usb_manager
 
 # Add device specific blobs here
@@ -38,15 +38,15 @@ lib/libril.so
 lib/libsc-a2xx.so
 lib/libsky_rawdata.so
 lib/libskytestclient.so
-lib/libuca-ril-qmi.so
+#lib/libuca-ril-qmi.so
 lib/libxml.so
 # Wi-Fi
 etc/wifi/wpa_supplicant.conf
-vendor/firmware/fw_bcm4330_mfg_b2.bin
-vendor/firmware/fw_bcmdhd.bin
-vendor/firmware/fw_bcmdhd_apsta.bin
-vendor/firmware/fw_bcmdhd_p2p.bin
-vendor/firmware/libpn544_fw.so
+#vendor/firmware/fw_bcm4330_mfg_b2.bin
+#vendor/firmware/fw_bcmdhd.bin
+#vendor/firmware/fw_bcmdhd_apsta.bin
+#vendor/firmware/fw_bcmdhd_p2p.bin
+#vendor/firmware/libpn544_fw.so
 
 
 

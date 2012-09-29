@@ -18,7 +18,7 @@ else
   fi
 fi
 
-BASE=../../../vendor/pantech/ef39s/proprietary
+BASE=../../../vendor/pantech/ef33s/proprietary
 rm -rf $BASE/*
 
 for FILE in `egrep -v '(^#|^$)' proprietary-files.txt`; do
