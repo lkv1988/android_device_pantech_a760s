@@ -17,13 +17,14 @@ loglevel 3
     export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
     export LD_LIBRARY_PATH /vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 1
+    export ANDROID_CACHE /cache
     export ANDROID_ROOT /system
     export ANDROID_ASSETS /system/app
     export ANDROID_DATA /data
     #modified env variable by dongseok(p11171)
     #export EXTERNAL_STORAGE /mnt/sdcard
     export INTERNAL_STORAGE /mnt/sdcard
-    export EXTERNAL_STORAGE /mnt/sdcard/external_sd
+    export EXTERNAL_STORAGE /mnt/external_sd
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/filterfw.jar
@@ -44,7 +45,7 @@ loglevel 3
     mkdir /mnt/sdcard 0000 system system
 
 # added by donseok(p11171)
-    mkdir /mnt/sdcard/external_sd 0777 system system
+    mkdir /mnt/external_sd 0777 system system
     
 # Create cgroup mount point for cpu accounting
     mkdir /acct
@@ -56,7 +57,7 @@ loglevel 3
 
     mkdir /system
     mkdir /data 0771 system system
-    mkdir /cache 0770 system cache
+    mkdir /cache 0771 system cache
     mkdir /config 0500 root root
 
     # Directory for putting things only root should see.
@@ -119,7 +120,7 @@ on fs
     mount yaffs2 mtd@cache /cache nosuid nodev
     mount yaffs2 mtd@persist /persist nosuid nodev
 
-on emmc-fs
+#on emmc-fs
 # mount mmc partitions
     #<-- blocked by dongseok(p11171)
     #wait /dev/block/mmcblk0p12
@@ -131,27 +132,27 @@ on emmc-fs
     #mount ext4 /dev/block/mmcblk0p15 /cache nosuid nodev barrier=1
     #-->
     #<-- added by dongseok(p11171)
-    wait /dev/block/mmcblk0p13
-    mount ext4 /dev/block/mmcblk0p13 /system rw barrier=1
-    wait /dev/block/mmcblk0p15
-    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p15
-    exec /system/bin/e2fsck -p /dev/block/mmcblk0p15  
-    mount ext4 /dev/block/mmcblk0p15 /persist nosuid nodev noatime barrier=1
-    wait /dev/block/mmcblk0p14
-    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p14
-    exec /system/bin/e2fsck -p /dev/block/mmcblk0p14
-    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime barrier=1
-    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime remount noauto_da_alloc
-    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime remount discard
-    wait /dev/block/mmcblk0p16
-    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p16
-    exec /system/bin/e2fsck -p /dev/block/mmcblk0p16  
-    mount ext4 /dev/block/mmcblk0p16 /cache nosuid nodev noatime barrier=1
-    wait /dev/block/mmcblk0p19
-    exec /system/bin/mmcblk_utils fat /dev/block/mmcblk0p19
+#    wait /dev/block/mmcblk0p13
+#    mount ext4 /dev/block/mmcblk0p13 /system rw barrier=1
+#    wait /dev/block/mmcblk0p15
+#    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p15
+#    exec /system/bin/e2fsck -p /dev/block/mmcblk0p15  
+#    mount ext4 /dev/block/mmcblk0p15 /persist nosuid nodev noatime barrier=1
+#    wait /dev/block/mmcblk0p14
+#    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p14
+#    exec /system/bin/e2fsck -p /dev/block/mmcblk0p14
+#    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime barrier=1
+#    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime remount noauto_da_alloc
+#    mount ext4 /dev/block/mmcblk0p14 /data nosuid nodev noatime remount discard
+#    wait /dev/block/mmcblk0p16
+#    exec /system/bin/mmcblk_utils ext4 /dev/block/mmcblk0p16
+#    exec /system/bin/e2fsck -p /dev/block/mmcblk0p16  
+#    mount ext4 /dev/block/mmcblk0p16 /cache nosuid nodev noatime barrier=1
+#    wait /dev/block/mmcblk0p19
+#    exec /system/bin/mmcblk_utils fat /dev/block/mmcblk0p19
 # N0056 SSD patition delete
-    wait /dev/block/mmcblk0p20
-    exec /system/bin/mmcblk_utils fat /dev/block/mmcblk0p20
+#    wait /dev/block/mmcblk0p20
+#    exec /system/bin/mmcblk_utils fat /dev/block/mmcblk0p20
 
 
 on post-fs
@@ -196,7 +197,7 @@ on post-fs
 
     write /proc/apanic_console 1
     chown system cache /cache
-    chmod 0770 /cache
+    chmod 0771 /cache
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
@@ -523,6 +524,9 @@ on boot
 # Set this property so surfaceflinger is not started by system_init
     setprop system_init.startsurfaceflinger 0
 
+# Run sysinit
+    exec /system/bin/sysinit
+
     class_start core
     class_start main
 
@@ -685,8 +689,8 @@ service debuggerd /system/bin/debuggerd
     class main
     
 # P10582 2010/02/25 : SKY Station server.
-service pam_server /system/bin/pam_server
-    class main
+#service pam_server /system/bin/pam_server
+#    class main
     
 
 service ril-daemon /system/bin/rild
@@ -722,12 +726,12 @@ service media /system/bin/mediaserver
     ioprio rt 4
 
 #bootsound
-service bootsound /system/bin/playwav /system/media/boot.wav
-    class main
-    user media
-    group audio
-    disabled
-    oneshot
+#service bootsound /system/bin/playwav /system/media/boot.wav
+#    class main
+#    user media
+#    group audio
+#    disabled
+#    oneshot
 
 #bootanimation	
 service bootanim /system/bin/bootanimation
