@@ -24,7 +24,7 @@ loglevel 3
     #modified env variable by dongseok(p11171)
     #export EXTERNAL_STORAGE /mnt/sdcard
     export INTERNAL_STORAGE /mnt/sdcard
-    export EXTERNAL_STORAGE /mnt/sdcard/external_sd
+    export EXTERNAL_STORAGE /mnt/emmc
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/filterfw.jar
@@ -45,7 +45,7 @@ loglevel 3
     mkdir /mnt/sdcard 0000 system system
 
 # added by donseok(p11171)
-    mkdir /mnt/sdcard/external_sd 0777 system system
+    mkdir /mnt/emmc 0777 system system
     
 # Create cgroup mount point for cpu accounting
     mkdir /acct

@@ -55,7 +55,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 1073741824
 BOARD_FLASH_BLOCK_SIZE             := 131072
 
 BOARD_USES_GENLOCK           := true
-#BOARD_USE_LEGACY_TOUCHSCREEN := true
+BOARD_USE_LEGACY_TOUCHSCREEN := true
 #BOARD_USE_LEGACY_TRACKPAD := true
 
 # FIXME: needs to be disabled for camera preview to work correctly
@@ -83,12 +83,14 @@ WIFI_DRIVER_FW_PATH_AP      := "/system/vendor/firmware/fw_bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_P2P     := "/system/vendor/firmware/fw_bcmdhd_p2p.bin"
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
-BOARD_VOLD_MAX_PARTITIONS := 27
-TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
+BOARD_VOLD_MAX_PARTITIONS := 19
+BOARD_USE_USB_MASS_STORAGE_SWITCH := true
+TARGET_USE_CUSTOM_SECOND_LUN_NUM := 1
+#TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/devices/platform/msm_hsusb/gadget/lun%d/file
 
-BOARD_SDCARD_DEVICE_PRIMARY   := /dev/block/mmcblk1p1
-BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk0p27
-BOARD_SDEXT_DEVICE            := /dev/block/mmcblk1p2
+#BOARD_SDCARD_DEVICE_PRIMARY   := /dev/block/mmcblk1p1
+#BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk0p27
+#BOARD_SDEXT_DEVICE            := /dev/block/mmcblk1p2
 
 # recovery
 #BOARD_TOUCH_RECOVERY	:= true

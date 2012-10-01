@@ -25,11 +25,11 @@ $(call inherit-product-if-exists, vendor/pantech/ef33s/ef33s-vendor.mk)
 ## overlays
 DEVICE_PACKAGE_OVERLAYS += device/pantech/ef33s/overlay
 
-PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
-PRODUCT_AAPT_PREF_CONFIG := xhdpi
+PRODUCT_AAPT_CONFIG := hdpi
+PRODUCT_AAPT_PREF_CONFIG := hdpi
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-	LOCAL_KERNEL := device/pantech/ef33s/prebuilt/kernel
+	LOCAL_KERNEL := device/pantech/ef33s/kernel
 else
 	LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
 endif
@@ -70,9 +70,7 @@ PRODUCT_COPY_FILES += \
 # Vold configuration
 PRODUCT_COPY_FILES += \
     device/pantech/ef33s/prebuilt/vold.fstab:system/etc/vold.fstab
-# IDC
-PRODUCT_COPY_FILES += \
-    device/pantech/ef33s/idc/qt602240_ts_input.idc:system/usr/idc/qt602240_ts_input.idc \
+
 # Set default USB interface
 #PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 #    persist.sys.usb.config=mass_storage
