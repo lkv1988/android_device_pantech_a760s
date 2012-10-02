@@ -51,8 +51,7 @@ PRODUCT_COPY_FILES += \
     device/pantech/ef33s/modules/qce.ko:system/lib/modules/qce.ko \
     device/pantech/ef33s/modules/qcrypto.ko:system/lib/modules/qcrypto.ko \
     device/pantech/ef33s/modules/scsi_wait_scan.ko:system/lib/modules/scsi_wait_scan.ko \
-    device/pantech/ef33s/modules/tsif_chrdev.ko:system/lib/modules/tsif_chrdev.ko \
-    device/pantech/ef33s/modules/wlan.ko:system/lib/modules/wlan.ko
+    device/pantech/ef33s/modules/tsif_chrdev.ko:system/lib/modules/tsif_chrdev.ko
 
 # Ramdisk
 PRODUCT_COPY_FILES += \
@@ -62,8 +61,15 @@ PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/ramdisk/init.rc:root/init.rc \
 	device/pantech/ef33s/ramdisk/ueventd.rc:root/ueventd.rc
 
+# IDC
+PRODUCT_COPY_FILES += \
+	device/pantech/ef33s/idc/cyttsp-i2c.idc:system/usr/idc/cyttsp-i2c.idc
+
 # BT firmware
 PRODUCT_COPY_FILES += \
+	device/pantech/ef33s/prebuilt/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd:system/bin/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd \
+	device/pantech/ef33s/init.bt.sh:system/etc/init.bt.sh
+#	device/pantech/ef33s/prebuilt/bcm4329.hcd:vendor/firmware/bcm4329.hcd
 
 # WIFI
 PRODUCT_COPY_FILES += \
@@ -75,8 +81,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/prebuilt/01_qcomm_omx.cfg:system/etc/01_qcomm_omx.cfg \
-	device/pantech/ef33s/prebuilt/dlextractor.cfg:system/etc/dlextractor.cfg \
-	device/pantech/ef33s/prebuilt/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd:system/bin/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd
+	device/pantech/ef33s/prebuilt/dlextractor.cfg:system/etc/dlextractor.cfg
+
 # Vold configuration
 PRODUCT_COPY_FILES += \
     device/pantech/ef33s/prebuilt/vold.fstab:system/etc/vold.fstab

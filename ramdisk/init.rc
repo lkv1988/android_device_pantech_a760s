@@ -784,8 +784,8 @@ on property:service.brcm.bt.soft_onoff=1
     start btld
 
 # stop btld if soft_onoff is disabled
-#on property:service.brcm.bt.soft_onoff=0
-#    stop btld
+on property:service.brcm.bt.soft_onoff=0
+    stop btld
 
 service bluetoothd /system/bin/bluetoothd -n
     class main

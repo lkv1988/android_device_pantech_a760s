@@ -102,6 +102,7 @@ WIFI_DRIVER_MODULE_NAME          := "bcm4329"
 WIFI_DRIVER_MODULE_ARG           := "firmware_path=/system/etc/wl/bcm43291.bin nvram_path=/system/etc/wl/nvram.txt"
 #BOARD_WLAN_DEVICE_REV            := bcm4329
 WIFI_BAND                        := 802_11_ABG
+TARGET_CUSTOM_WIFI := ../../device/pantech/ef33s/wifi/wifi.c
 
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
