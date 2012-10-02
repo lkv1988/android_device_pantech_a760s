@@ -25,8 +25,7 @@ $(call inherit-product-if-exists, vendor/pantech/ef33s/ef33s-vendor.mk)
 ## overlays
 DEVICE_PACKAGE_OVERLAYS += device/pantech/ef33s/overlay
 
-PRODUCT_AAPT_CONFIG := hdpi
-PRODUCT_AAPT_PREF_CONFIG := hdpi
+
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 	LOCAL_KERNEL := device/pantech/ef33s/kernel
@@ -65,8 +64,19 @@ PRODUCT_COPY_FILES += \
 
 # BT firmware
 PRODUCT_COPY_FILES += \
-    device/pantech/ef33s/prebuilt/BCM4330B1_002.001.003.0379.0462.hcd:system/bin/BCM4330B1_002.001.003.0379.0462.hcd
 
+# WIFI
+PRODUCT_COPY_FILES += \
+	device/pantech/ef33s/wifi/bcm43291.bin:system/etc/wl/bcm43291.bin \
+	device/pantech/ef33s/wifi/bcm43291_apsta.bin:system/etc/wl/bcm43291_apsta.bin \
+	device/pantech/ef33s/wifi/bcm43291_p2p.bin:system/etc/wl/bcm43291_p2p.bin \
+	device/pantech/ef33s/wifi/nvram.txt:system/etc/wl/nvram.txt \
+	device/pantech/ef33s/wifi/wlan.ko:system/lib/modules/wlan.ko
+
+PRODUCT_COPY_FILES += \
+	device/pantech/ef33s/prebuilt/01_qcomm_omx.cfg:system/etc/01_qcomm_omx.cfg \
+	device/pantech/ef33s/prebuilt/dlextractor.cfg:system/etc/dlextractor.cfg \
+	device/pantech/ef33s/prebuilt/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd:system/bin/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd
 # Vold configuration
 PRODUCT_COPY_FILES += \
     device/pantech/ef33s/prebuilt/vold.fstab:system/etc/vold.fstab
