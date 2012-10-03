@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-PRODUCT_LOCALES := zh_CN zh_TW en_US
-
 ## The gps config appropriate for this device
 PRODUCT_COPY_FILES += device/common/gps/gps.conf_US_SUPL:system/etc/gps.conf
 
@@ -67,9 +65,8 @@ PRODUCT_COPY_FILES += \
 
 # BT firmware
 PRODUCT_COPY_FILES += \
-	device/pantech/ef33s/prebuilt/bcm4329.hcd:vendor/firmware/bcm4329.hcd
-#	device/pantech/ef33s/prebuilt/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd:system/bin/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd \
-#	device/pantech/ef33s/init.bt.sh:system/etc/init.bt.sh \
+	device/pantech/ef33s/prebuilt/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd:system/bin/BCM43291A0_003.001.013.0141.0000_Pantech_EF33S_EF34K_extLNA_TestOnly.hcd \
+	device/pantech/ef33s/prebuilt/init.qcom.bt.sh:system/etc/init.qcom.bt.sh
 # WIFI
 PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/wifi/bcm43291.bin:system/etc/wl/bcm43291.bin \
