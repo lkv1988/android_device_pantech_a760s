@@ -760,8 +760,12 @@ service installd /system/bin/installd
 #    oneshot
 # DS1_DS_WIFI_WPA_SUPPLICANT_ALWAYS_DAEMON
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf
-    group wifi inet radio
-    class late_start # PZ2223, Data Encryption # main
+#    group wifi inet radio
+#    class late_start # PZ2223, Data Encryption # main
+#    disabled
+#    oneshot
+    class main
+    socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
 

@@ -30,7 +30,7 @@ USE_CAMERA_STUB := false
 # inherit from the proprietary version
 -include vendor/pantech/ef33s/BoardConfigVendor.mk
 
-TARGET_BOOTLOADER_BOARD_NAME := IM-A760S
+TARGET_BOOTLOADER_BOARD_NAME := MSM8660_SURF
 
 # assert
 TARGET_OTA_ASSERT_DEVICE := a760s,ef33s,IM-A760S
@@ -94,7 +94,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
 BOARD_WLAN_DEVICE                := bcm4329
 #BOARD_HOSTAPD_DRIVER 		 := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB 	 := lib_driver_cmd_wext
-WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/bcm4329/parameters/firmware_path"
+WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/wlan/parameters/firmware_path"
 WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wlan.ko"
 WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wl/bcm43291.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wl/bcm43291_apsta.bin"
