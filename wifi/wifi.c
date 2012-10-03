@@ -534,7 +534,6 @@ int update_ctrl_interface(const char *config_file) {
     }
 
     if (!strcmp(config_file, SUPP_CONFIG_FILE)) {
-	//strcpy(ifc,"DIR=/data/misc/wpa_supplicant GROUP=wifi");
 	property_get("wifi.interface", ifc, WIFI_TEST_INTERFACE);
     } else {
         strcpy(ifc, CONTROL_IFACE_PATH);

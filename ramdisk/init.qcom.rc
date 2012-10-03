@@ -44,20 +44,20 @@ on boot-pause
     
 on boot
 #    exec system/bin/btnvtool -O
-#    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
-#    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
-#    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-#    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-#    chown system system /sys/module/sco/parameters/disable_esco
-#    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-#    chmod 0660 /sys/module/bluetooth_power/parameters/power
-#    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
-#    chmod 0660 /sys/class/rfkill/rfkill0/state
-#    chmod 0660 /proc/bluetooth/sleep/proto
-#    chown bluetooth bluetooth /dev/ttyHS0
-#    chmod 0660 /dev/ttyHS0
-#    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-#    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+    chown system system /sys/module/sco/parameters/disable_esco
+    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+    chmod 0660 /sys/module/bluetooth_power/parameters/power
+    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+    chmod 0660 /sys/class/rfkill/rfkill0/state
+    chmod 0660 /proc/bluetooth/sleep/proto
+    chown bluetooth bluetooth /dev/ttyHS0
+    chmod 0660 /dev/ttyHS0
+    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
 
     #Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
@@ -226,11 +226,18 @@ service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmc
 on property:ro.emmc=1
     start rmt_storage
 
-service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
+service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
+    --baudrate 3000000 --patchram /vendor/firmware/bcm4329.hcd /dev/ttyHS0
     class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
+
+#service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
+#    class main
+#    user bluetooth
+#    group bluetooth net_bt_admin
+#    disabled
 
 #service bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
 #    class late_start
@@ -338,8 +345,7 @@ on property:ro.data.large_tcp_window_size=true
 #    oneshot
 #BSH -- ics removed
 
-#service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
-service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
     class late_start
     disabled
     oneshot
@@ -418,11 +424,6 @@ service qcom-sh /system/bin/sh /init.qcom.sh
     class late_start
     user root
     oneshot
-
-# Pantech USB usb_control_manager
-service usb_manager /system/bin/usb_manager
-	class main #DATA_ENCRYPTION late_start
-	user root
 
 #skytest	// Inserted by dscheon.
 service skytestserver /system/bin/skytestserver
