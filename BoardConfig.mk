@@ -23,7 +23,6 @@
 # WARNING: This line must come *before* including the proprietary
 # variant, so that it gets overwritten by the parent (which goes
 # against the traditional rules of inheritance).
-USE_CAMERA_STUB := false
 # inherit from common msm8660
 -include device/pantech/msm8660-common/BoardConfigCommon.mk
 
@@ -57,8 +56,6 @@ BOARD_USES_GENLOCK           := true
 #BOARD_USE_LEGACY_TOUCHSCREEN := true
 #BOARD_USE_LEGACY_TRACKPAD := true
 
-# FIXME: needs to be disabled for camera preview to work correctly
-#TARGET_QCOM_HDMI_OUT := true
 BOARD_USES_QCOM_LIBRPC := true
 BOARD_USES_QCOM_LIBS := true
 BOARD_USE_SKIA_LCDTEXT := true
@@ -72,22 +69,10 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 TARGET_USES_QCOM_LPA := true
 COMMON_GLOBAL_CFLAGS += -DWITH_QCOM_LPA
 
-# Wifi related defines
-#WIFI_BAND := 802_11_ABG
-#WPA_SUPPLICANT_VERSION := VER_0_8_X
-#BOARD_WPA_SUPPLICANT_DRIVER := WEXT
-#BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
-#BOARD_HOSTAPD_DRIVER := WEXT
-#BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_bcmdhd
-#BOARD_WLAN_DEVICE := bcmdhd
-
-#WIFI_DRIVER_FW_PATH_PARAM   := "/sys/module/bcmdhd/parameters/firmware_path"
-#WIFI_DRIVER_FW_PATH_STA     := "/system/vendor/firmware/fw_bcmdhd.bin"
-#WIFI_DRIVER_FW_PATH_AP      := "/system/vendor/firmware/fw_bcmdhd_apsta.bin"
-#WIFI_DRIVER_FW_PATH_P2P     := "/system/vendor/firmware/fw_bcmdhd_p2p.bin"
-
 # RIL
 BOARD_PROVIDES_LIBRIL := true
+
+# WIFI
 BOARD_WPA_SUPPLICANT_DRIVER      := WEXT
 WPA_SUPPLICANT_VERSION           := VER_0_8_X
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_wext
@@ -95,12 +80,12 @@ BOARD_WLAN_DEVICE                := bcm4329
 #BOARD_HOSTAPD_DRIVER 		 := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB 	 := lib_driver_cmd_wext
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/wlan/parameters/firmware_path"
-WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/bcm4329.ko"
 WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wl/bcm43291.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wl/bcm43291_apsta.bin"
 WIFI_DRIVER_MODULE_NAME          := "bcm4329"
 WIFI_DRIVER_MODULE_ARG           := "firmware_path=/system/etc/wl/bcm43291.bin nvram_path=/system/etc/wl/nvram.txt"
-#BOARD_WLAN_DEVICE_REV            := bcm4329
+BOARD_WLAN_DEVICE_REV            := bcm4329
 WIFI_BAND                        := 802_11_ABG
 TARGET_CUSTOM_WIFI := ../../device/pantech/ef33s/wifi/wifi.c
 

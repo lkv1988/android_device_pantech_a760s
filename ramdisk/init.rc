@@ -87,6 +87,11 @@ loglevel 3
     write /proc/sys/kernel/sched_child_runs_first 0
     write /proc/sys/kernel/randomize_va_space 2
 
+# For modem
+	mkdir /firmware/image 0777 system system
+	chmod 0777 /firmware/image
+	chown system system /firmware/image
+
 # Create cgroup mount points for process groups
     mkdir /dev/cpuctl
     mount cgroup none /dev/cpuctl cpu
@@ -177,6 +182,11 @@ on post-fs
     chown system system /sys/devices/platform/msm_sdcc.2/polling
     chown system system /sys/devices/platform/msm_sdcc.3/polling
     chown system system /sys/devices/platform/msm_sdcc.4/polling
+
+	# sh permissions
+	chmod 0666 /system/bin/load-modem.sh
+	chmod 0666 /system/etc/init.qcom.modem_links.sh
+	chmod 0666 /system/etc/init.qcom.post_boot.sh
 
     # Create dump dir and collect dumps.
     # Do this before we mount cache so eventually we can use cache for
@@ -888,6 +898,12 @@ service load-modem /system/bin/sh /system/bin/load-modem.sh
     user root
     disabled
     oneshot
+
+service qcom-modem /system/bin/sh /system/etc/init.qcom.modem_links.sh
+	class late_start
+	user root
+	disabled
+	oneshot
 
 service mtpd /system/bin/mtpd
     class main

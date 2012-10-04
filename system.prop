@@ -48,7 +48,8 @@ ro.vendor.extension_library=/system/lib/libqc-opt.so
 # system props for the data modules
 #
 ro.use_data_netmgrd=true
-
+persist.data_netmgrd_nint=8
+persist.data_netmgrd_mtu=1472
 #
 # system props for SD card emulation of emmc partition
 #
