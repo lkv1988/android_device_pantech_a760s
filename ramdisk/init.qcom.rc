@@ -425,6 +425,11 @@ service qcom-sh /system/bin/sh /init.qcom.sh
     user root
     oneshot
 
+# Pantech USB usb_control_manager
+service usb_manager /system/bin/usb_manager
+	class main #DATA_ENCRYPTION late_start
+	user root
+
 #skytest	// Inserted by dscheon.
 service skytestserver /system/bin/skytestserver
     class late_start #main #PZ2223, DATA_ENCRYPTION 
