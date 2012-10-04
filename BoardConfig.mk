@@ -59,7 +59,6 @@ BOARD_USES_GENLOCK           := true
 BOARD_USES_QCOM_LIBRPC := true
 BOARD_USES_QCOM_LIBS := true
 BOARD_USE_SKIA_LCDTEXT := true
-USE_OPENGL_RENDERER := true
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
 # Workaround for glitches while cropping bypass layers
@@ -80,7 +79,7 @@ BOARD_WLAN_DEVICE                := bcm4329
 #BOARD_HOSTAPD_DRIVER 		 := WEXT
 #BOARD_HOSTAPD_PRIVATE_LIB 	 := lib_driver_cmd_wext
 WIFI_DRIVER_FW_PATH_PARAM        := "/sys/module/wlan/parameters/firmware_path"
-WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/bcm4329.ko"
+WIFI_DRIVER_MODULE_PATH          := "/system/lib/modules/wlan.ko"
 WIFI_DRIVER_FW_PATH_STA          := "/system/etc/wl/bcm43291.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/etc/wl/bcm43291_apsta.bin"
 WIFI_DRIVER_MODULE_NAME          := "bcm4329"

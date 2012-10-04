@@ -21,7 +21,7 @@ ro.telephony.ril.v3=1
 DEVICE_PROVISIONED=1
 debug.sf.hw=1
 debug.composition.type=dyn
-ro.sf.compbypass.enable=0
+ro.sf.compbypass.enable=1
 
 dev.pm.dyn_samplingrate=1
 debug.sf.reboot=1
@@ -30,8 +30,8 @@ debug.sf.reboot=1
 #
 #lpa.decode=true
 #jmlee Qsound EQ --> LPA Dsiable
-lpa.decode=false
-lpa.use-stagefright=false
+lpa.decode=true
+lpa.use-stagefright=true
 
 #system props for the MM modules
 media.stagefright.enable-player=true
@@ -40,7 +40,6 @@ media.stagefright.enable-fma2dp=false
 media.stagefright.enable-aac=true
 media.stagefright.enable-qcp=true
 media.stagefright.enable-scan=true
-media.stagefright.enable-meta=true
 
 ro.vendor.extension_library=/system/lib/libqc-opt.so
 
@@ -48,8 +47,7 @@ ro.vendor.extension_library=/system/lib/libqc-opt.so
 # system props for the data modules
 #
 ro.use_data_netmgrd=true
-persist.data_netmgrd_nint=8
-persist.data_netmgrd_mtu=1472
+
 #
 # system props for SD card emulation of emmc partition
 #
@@ -78,10 +76,18 @@ ro.opengles.version=131072
 ro.sf.lcd_density=240
 
 # notify vold we have internal and external sd
+#
+# System prop for sending transmit power request to RIL during WiFi hotspot on/off
+#
+ro.ril.transmitpower=true
 ro.additionalmounts=/mnt/sdcard
 ro.vold.switchablepair=/mnt/sdcard,/mnt/emmc
+#
+# System prop for using landscape preview layout in camera
+#
+debug.camera.landscape=true
 
 # qcom display options
-#debug.enabletr=true
+
 com.qc.hardware=true
 
