@@ -187,6 +187,7 @@ on post-fs
 	chmod 0666 /system/bin/load-modem.sh
 	chmod 0666 /system/etc/init.qcom.modem_links.sh
 	chmod 0666 /system/etc/init.qcom.post_boot.sh
+	chmod 0666 /system/bin/load-modem.sh
 
     # Create dump dir and collect dumps.
     # Do this before we mount cache so eventually we can use cache for
