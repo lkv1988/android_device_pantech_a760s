@@ -69,7 +69,7 @@ PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/wifi/bcm43291_apsta.bin:system/etc/wl/bcm43291_apsta.bin \
 	device/pantech/ef33s/wifi/bcm43291_p2p.bin:system/etc/wl/bcm43291_p2p.bin \
 	device/pantech/ef33s/wifi/nvram.txt:system/etc/wl/nvram.txt \
-	device/pantech/ef33s/wifi/bcm4329.ko:system/lib/modules/wlan.ko
+	device/pantech/ef33s/wifi/wlan.ko:system/lib/modules/wlan.ko
 
 PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/prebuilt/01_qcomm_omx.cfg:system/etc/01_qcomm_omx.cfg \
