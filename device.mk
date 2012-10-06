@@ -57,7 +57,8 @@ PRODUCT_COPY_FILES += \
 	device/pantech/ef33s/ramdisk/init.qcom.rc:root/init.qcom.rc \
 	device/pantech/ef33s/ramdisk/init.qcom.usb.rc:root/init.qcom.usb.rc \
 	device/pantech/ef33s/ramdisk/init.rc:root/init.rc \
-	device/pantech/ef33s/ramdisk/ueventd.rc:root/ueventd.rc
+	device/pantech/ef33s/ramdisk/ueventd.rc:root/ueventd.rc \
+	device/pantech/ef33s/ramdisk/init.qcom.sh:root/init.qcom.sh
 
 # IDC
 PRODUCT_COPY_FILES += \

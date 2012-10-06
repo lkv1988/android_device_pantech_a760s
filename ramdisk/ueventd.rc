@@ -146,7 +146,7 @@
 /dev/tdmb                 0666   system     system
 # TSIF device
 /dev/tsif1                0666   system     system #pangya tsif0->tsif1
-
+/dev/tsif0                0666   system     system
 
 # sysfs properties
 /sys/devices/virtual/input/input*   enable      0660  root   input

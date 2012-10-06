@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2011, Code Aurora Forum. All rights reserved.
+# Copyright (c) 2009-2012, Code Aurora Forum. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -38,26 +38,26 @@ on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
 
-# FEATURE_SKY_CHARGING EF33S GB use boot-pause. so In init_EF33S.rc charger class unuse
+# offline charging 
 on boot-pause
     exec system/bin/battery_charging
     
 on boot
 #    exec system/bin/btnvtool -O
-    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
-    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
-    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
-    chown system system /sys/module/sco/parameters/disable_esco
-    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
-    chmod 0660 /sys/module/bluetooth_power/parameters/power
-    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
-    chmod 0660 /sys/class/rfkill/rfkill0/state
-    chmod 0660 /proc/bluetooth/sleep/proto
-    chown bluetooth bluetooth /dev/ttyHS0
-    chmod 0660 /dev/ttyHS0
-    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
-    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
+#    chown bluetooth bluetooth /sys/module/bluetooth_power/parameters/power
+#    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/type
+#    chown bluetooth bluetooth /sys/class/rfkill/rfkill0/state
+#    chown bluetooth bluetooth /proc/bluetooth/sleep/proto
+#    chown system system /sys/module/sco/parameters/disable_esco
+#    chown bluetooth bluetooth /sys/module/hci_smd/parameters/hcismd_set
+#    chmod 0660 /sys/module/bluetooth_power/parameters/power
+#    chmod 0660 /sys/module/hci_smd/parameters/hcismd_set
+#    chmod 0660 /sys/class/rfkill/rfkill0/state
+#    chmod 0660 /proc/bluetooth/sleep/proto
+#    chown bluetooth bluetooth /dev/ttyHS0
+#    chmod 0660 /dev/ttyHS0
+#    chown bluetooth bluetooth /sys/devices/platform/msm_serial_hs.0/clock
+#    chmod 0660 /sys/devices/platform/msm_serial_hs.0/clock
 
     #Create QMUX deamon socket area
     mkdir /dev/socket/qmux_radio 0770 radio radio
@@ -66,11 +66,13 @@ on boot
     chmod 2770 /dev/socket/qmux_audio
     mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
     chmod 2770 /dev/socket/qmux_bluetooth
+
     setprop wifi.interface wlan0
 
     #Set SUID bit for usbhub
-    chmod 755 /system/bin/usbhub    
-    #chmod 4755 /system/bin/usbhub #CTS_Verifier_Fail_modify_PZ1815
+    #PANTECH FOR CTS SUID TEST
+    #chmod 4755 /system/bin/usbhub
+    chmod 4750 /system/bin/usbhub
     chmod 755 /system/bin/usbhub_init
 
     #Remove SUID bit for iproute2 ip tool
@@ -78,16 +80,16 @@ on boot
 
     #port-bridge
     chmod 0660 /dev/smd0
-    chown system system /dev/smd0 
+    chown system system /dev/smd0
 
     #BT DUN port-bridge
-#    chmod 0660 /dev/smd7
-#    chown bluetooth bluetooth /dev/smd7
+    chmod 0660 /dev/smd7
+    chown bluetooth bluetooth /dev/smd7
 
     chmod 0444 /sys/devices/platform/msm_hsusb/gadget/usb_state
 
     # create symlink for fb1 as HDMI
-#    symlink /dev/graphics/fb1 /dev/graphics/hdmi
+    symlink /dev/graphics/fb1 /dev/graphics/hdmi
 
     # Remove write permissions to video related nodes
     chmod 0664 /sys/devices/virtual/graphics/fb1/hpd
@@ -128,7 +130,10 @@ on post-fs-data
     mkdir /data/misc/bluetooth 0770 bluetooth bluetooth
 
     # Create the directories used by the Wireless subsystem
-    mkdir /data/misc/wifi 0770 wifi wifi
+# FEATURE_SKY_WIFI_KT_CM_PORTING +++
+#    mkdir /data/misc/wifi 0770 wifi wifi
+    mkdir /data/misc/wifi 0771 wifi wifi
+# FEATURE_SKY_WIFI_KT_CM_PORTING ---
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/wifi/wpa_supplicant 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
@@ -159,6 +164,7 @@ on post-fs-data
     #Create directories for wiper services
     mkdir /data/wpstiles/ 0755 shell
     mkdir /data/wiper 0755 gps qcom_oncrpc
+    #pz1570 added
     mkdir /data/vt/ 0777 shell
 
     #Create directories for gpsone_daemon services
@@ -187,10 +193,6 @@ on post-fs-data
 
     setprop vold.post_fs_data_done 1
 
-# '12/01/11 usb_manager permission added by hkkwon@LS2
-	chown system system /sys/devices/platform/android_usb/usb_manager
-	chmod 0660 /sys/devices/platform/android_usb/usb_manager
-
 # Export GPIO56 for fusion targets to enable/disable hub
 service usbhub_init /system/bin/usbhub_init
    class late_start
@@ -206,19 +208,14 @@ on property:init.svc.wpa_supplicant=stopped
 
 #on property:bluetooth.isEnabled=true
 #    start btwlancoex
-#    start amp_load
 #    write /sys/class/bluetooth/hci0/idle_timeout 7000
 
-#on property:bluetooth.isEnabled=false
-#    start amp_unload
-#    stop btwlancoex
-
 service cnd /system/bin/cnd
-    class main # late_start #PZ2223, DataEncryprion
+#[BIH] cnd class changed to late_start to main because device encryption issue    class late_start
+    class main
     socket cnd stream 666 root radio
 
-#jbg 30150patch late_start => main
-service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmcblk0p11 /dev/block/mmcblk0p17
+service rmt_storage /system/bin/rmt_storage
     class main
     user root
     disabled
@@ -226,25 +223,23 @@ service rmt_storage /system/bin/rmt_storage /dev/block/mmcblk0p10 /dev/block/mmc
 on property:ro.emmc=1
     start rmt_storage
 
-service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
-    --baudrate 3000000 --patchram /system/bin/bcm4329.hcd /dev/ttyHS0
-    class main
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-
 #service hciattach /system/bin/sh /system/etc/init.qcom.bt.sh
-#    class main
+#    class late_start
 #    user bluetooth
-#    group bluetooth net_bt_admin
+#    group qcom_oncrpc bluetooth net_bt_admin
 #    disabled
+#    oneshot
 
 #service bt-dun /system/bin/dun-server /dev/smd7 /dev/rfcomm0
-#    class late_start
+#   class late_start
+#    user bluetooth
+#    group bluetooth system net_bt_admin inet
 #    disabled
 #    oneshot
 
 #service bt-sap /system/bin/sapd 15
+#    user bluetooth
+#    group bluetooth net_bt_admin
 #    class late_start
 #    disabled
 #    oneshot
@@ -315,24 +310,6 @@ on property:ro.data.large_tcp_window_size=true
 #    class late_start
 #    user bluetooth
 #    group bluetooth net_bt_admin inet net_admin net_raw
-#    disabled
-#    oneshot
-
-#service amp_init /system/bin/amploader -i
-#    class late_start
-#    user root
-#    disabled
-#    oneshot
-
-#service amp_load /system/bin/amploader -l 7000
-#    class late_start
-#    user root
-#    disabled
-#    oneshot
-
-#service amp_unload /system/bin/amploader -u
-#    class late_start
-#    user root
 #    disabled
 #    oneshot
 
@@ -432,7 +409,7 @@ service usb_manager /system/bin/usb_manager
 
 #skytest	// Inserted by dscheon.
 service skytestserver /system/bin/skytestserver
-    class late_start #main #PZ2223, DATA_ENCRYPTION 
+    class main #DATA_ENCRYPTION 
     socket skytest stream 666
     user root
 
@@ -455,16 +432,18 @@ service atfwd /system/bin/ATFWD-daemon
     group system radio
     onrestart /system/bin/log -t RIL-ATFWD -p w "ATFWD daemon restarted"
 
-#service hdmid /system/bin/hdmid
-#    class late_start
-#    socket hdmid stream 0660 root system graphics
-#    disabled
-
-service ppd /system/bin/mm-pp-daemon
+service hdmid /system/bin/hdmid
     class late_start
-    user system
-    socket pps stream 0660 system system graphics
-    group system graphics
+    socket hdmid stream 0660 root system graphics
+    disabled
+
+#[BIH]--- disable CABL service
+#-service ppd /system/bin/mm-pp-daemon
+#-class late_start
+#-    user system
+#-   socket pps stream 0660 system system graphics
+#-    group system graphics
+#---
 
 service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
     class late_start
@@ -505,27 +484,6 @@ service time_daemon /system/bin/time_daemon
 on property:persist.timed.enable=true
     start time_daemon
 
-#service ftp /system/bin/sdptool add --psm=5257 --channel=20 FTP
-#    class late_start
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-#service map0 /system/bin/sdptool add --channel=16 MAS0
-#    class late_start
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
-#service map1 /system/bin/sdptool add --channel=17 MAS1
-#    class late_start
-#    user bluetooth
-#    group bluetooth net_bt_admin
-#    disabled
-#    oneshot
-
 service ril-daemon1 /system/bin/rild -c 1
     class late_start
     socket rild1 stream 660 root radio
@@ -547,8 +505,8 @@ service sdcard /system/bin/sdcard /data/media 1023 1023
 on property:persist.fuse_sdcard=true
     start sdcard
 
-#service hcidump /system/bin/sh /system/etc/hcidump.sh
-#    user bluetooth
-#    group bluetooth system net_bt_admin net_admin
-#    disabled
-#    oneshot
+service hcidump /system/bin/sh /system/etc/hcidump.sh
+    user bluetooth
+    group bluetooth system net_bt_admin net_admin
+    disabled
+    oneshot

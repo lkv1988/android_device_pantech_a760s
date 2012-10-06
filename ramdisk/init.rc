@@ -15,7 +15,7 @@ loglevel 3
 
 # setup the global environment
     export PATH /sbin:/vendor/bin:/system/sbin:/system/bin:/system/xbin
-    export LD_LIBRARY_PATH /vendor/lib:/system/lib
+    export LD_LIBRARY_PATH /data/lib:/vendor/lib:/system/lib
     export ANDROID_BOOTLOGO 1
     export ANDROID_CACHE /cache
     export ANDROID_ROOT /system
@@ -28,6 +28,8 @@ loglevel 3
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar:/system/framework/filterfw.jar
+
+    setprop ro.crypto.keyfile.userdata "/persist/cryptfooter"
 
 # Backward compatibility
     symlink /system/etc /etc
@@ -86,11 +88,6 @@ loglevel 3
     write /proc/sys/kernel/sched_compat_yield 1
     write /proc/sys/kernel/sched_child_runs_first 0
     write /proc/sys/kernel/randomize_va_space 2
-
-# For modem
-	mkdir /firmware/image 0777 system system
-	chmod 0777 /firmware/image
-	chown system system /firmware/image
 
 # Create cgroup mount points for process groups
     mkdir /dev/cpuctl
@@ -162,7 +159,7 @@ on emmc-fs
 
 on post-fs
     # once everything is setup, no need to modify /
-    mount rootfs rootfs / ro remount
+    mount rootfs rootfs / rw remount
 
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system system /data
@@ -183,12 +180,6 @@ on post-fs
     chown system system /sys/devices/platform/msm_sdcc.3/polling
     chown system system /sys/devices/platform/msm_sdcc.4/polling
 
-	# sh permissions
-	chmod 0666 /system/bin/load-modem.sh
-	chmod 0666 /system/etc/init.qcom.modem_links.sh
-	chmod 0666 /system/etc/init.qcom.post_boot.sh
-	chmod 0666 /system/bin/load-modem.sh
-
     # Create dump dir and collect dumps.
     # Do this before we mount cache so eventually we can use cache for
     # storing dumps on platforms which do not have a dedicated dump partition.
@@ -208,7 +199,7 @@ on post-fs
 
     write /proc/apanic_console 1
     chown system cache /cache
-    chmod 0770 /cache
+    chmod 0771 /cache
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
@@ -267,11 +258,6 @@ on post-fs-data
     chmod 0771 /data/misc/dmb
     chmod 0771 /data/misc/dmb/content
 
-# pcu_p11800 [FEATURE_SKT_VE]
-    mkdir /data/ve 0777 radio radio
-
-# p12455 ++ [for Hoppin] 
-	mkdir /data/playready 0770 media media
     
 # create directory for Audio Effect(QSound) by p11157_20120114
     mkdir /data/misc/audioeffect 0777 system system    
@@ -285,13 +271,10 @@ on post-fs-data
     chmod 0660 /system/etc/wifi/wpa_supplicant.conf
     chmod 0550 /system/wifi/wpa_supplicant.sh
     chmod 0550 /system/wifi/dhcpcd.sh
-#    mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp
     chown dhcp dhcp /data/misc/dhcp
-#    mkdir /data/misc/dhcp 0777 system system
-#    mkdir /data/misc/wifi 0777 system system
-#    mkdir /data/misc/wifi/sockets 0777 system system
+
     mkdir /data/system 0777 system system
 # goole cts fail    mkdir /data/system/wpa_supplicant 0777 wifi wifi
 # Broadcom wlan ---
@@ -341,11 +324,6 @@ on post-fs-data
     chown system system /sys/class/android_usb/android0/f_rndis/ethaddr
     chmod 0660 /sys/class/android_usb/android0/f_rndis/ethaddr
 
-# ww_kjs 20110216 skt news_weather requirement
-     mkdir /data/skaf 0777 root root
-     mkdir /data/skaf/share 0777 root root
-     mkdir /data/nate 0777 root root
-     mkdir /data/nate/share 0777 root root 
 # vome for Divx DRM by Doohyoung 20100918    
 
     mkdir /data/local/mono 0777 system system
@@ -358,37 +336,22 @@ on post-fs-data
     mkdir /data/local/purple/sound 0777 system system     
     
 # End vome for Divx DRM by Doohyoung 20100918
-    # voip application mkdir voipdone
-	mkdir /data/voipdone 0777 root root
-	mount tmpfs tmpfs /data/voipdone
 
-#mms for skt message
-    mkdir /data/contents 0777 root root
-    mkdir /data/contents/MMS/ 0777 root root
-    mkdir /data/contents/MMS/PICTURE 0777 root root
-    mkdir /data/contents/MMS/SOUND 0777 root root
-    mkdir /data/contents/MMS/TEMPLET 0777 root root
-    mkdir /data/contents/MMS/CAVATA 0777 root root
-    mkdir /data/contents/MMS/LETTER 0777 root root
-    mkdir /data/contents/MMS/ANITICON 0777 root root
-    mkdir /data/contents/MMS/CHARSKIN 0777 root root
-# cpmgr pipe [FEATURE_SKY_CP_MANAGER_DAEMON_INTERFACE]
-    mkdir /dev/cpmgr
-    chown system system /dev/cpmgr
-# end cpmgr
 
 # External Amp Device
     chmod 0666 /dev/ext_amp
 
-#FEATURE_SKY_DS_CTS_ROOT_PROCESS
-    mkdir /dev/pantech
-    chown system system /dev/pantech
 
 # External Amp Device
     chmod 0666 /dev/smd_vt
     chmod 0666 /dev/smd_mvs
     chmod 0666 /dev/msm_mvs
     chmod 0666 /dev/mvs_amr
+    
+# cpmgr pipe [FEATURE_SKY_CP_MANAGER_DAEMON_INTERFACE]
+    mkdir /dev/cpmgr
+    chown system system /dev/cpmgr
+# end cpmgr
 
 on boot
 # basic network init
@@ -402,7 +365,7 @@ on boot
     echo "0" > /data/accel-check.flag
 
 # N1037 / geomagnetic_raw
-    chown compass input /sys/class/input/input6/offsets
+    chown system input /sys/class/input/input6/offsets
     chmod 0664 /sys/class/input/input6/offsets
 	
 # N1037 / geomagnetic
@@ -421,6 +384,7 @@ on boot
 # set RLIMIT_NICE to allow priorities from 19 to -20
     setrlimit 13 40 40
 
+    chmod 0666 /dev/obex
 # CONFIG_PN544
     setprop ro.nfc.port "I2C"
     chmod 0600 /dev/pn544
@@ -443,7 +407,7 @@ on boot
     # Tweak background writeout
     write /proc/sys/vm/dirty_expire_centisecs 200
     write /proc/sys/vm/dirty_background_ratio  5
-
+    write /sys/devices/platform/msm_sdcc.3/polling 1
 # BSH ++
     #Broadcom wlan
     setprop wifi.interface wlan0
@@ -484,15 +448,7 @@ on boot
     chown system system /sys/kernel/ipv4/tcp_wmem_max
     chown system system /sys/kernel/ipv4/tcp_rmem_min
     chown system system /sys/kernel/ipv4/tcp_rmem_def
-    chown system system /sys/kernel/ipv4/tcp_rmem_max
-# N1037 geomagneticd (+)    
-    chmod 755 /system/bin/geomagneticd
-    chown system input /sys/class/input/input5/enable
-    chown system input /sys/class/input/input5/delay
-    chown system input /sys/class/input/input5/wake
-    chown compass input /sys/class/input/input6/offsets 
-    chown compass input /sys/class/input/input6/dynamic_matrix
-# N1037 geomagneticd (-)        
+    chown system system /sys/kernel/ipv4/tcp_rmem_max   
     chown root radio /proc/cmdline
 
 #+++ BRCM[Excelt], BTL-A
@@ -720,7 +676,7 @@ service surfaceflinger /system/bin/surfaceflinger
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     class main
-    socket zygote stream 660 root system
+    socket zygote stream 666 root system
     onrestart write /sys/android_power/request_state wake
     onrestart write /sys/power/state on
     onrestart restart media
@@ -751,6 +707,15 @@ service dbus /system/bin/dbus-daemon --system --nofork
     user bluetooth
     group bluetooth net_bt_admin
 
+service bluetoothd /system/bin/bluetoothd -n
+    class main
+    socket bluetooth stream 660 bluetooth bluetooth
+    socket dbus_bluetooth stream 660 bluetooth bluetooth
+    # init.rc does not yet support applying capabilities, so run as root and
+    # let bluetoothd drop uid to bluetooth with the right linux capabilities
+    group bluetooth net_bt_admin misc
+    disabled
+    
 service installd /system/bin/installd
     class main
     socket installd stream 600 system system
@@ -786,17 +751,8 @@ on property:service.brcm.bt.soft_onoff=1
     start btld
 
 # stop btld if soft_onoff is disabled
-on property:service.brcm.bt.soft_onoff=0
-    stop btld
-
-service bluetoothd /system/bin/bluetoothd -n
-    class main
-    socket bluetooth stream 660 bluetooth bluetooth
-    socket dbus_bluetooth stream 660 bluetooth bluetooth
-    # init.rc does not yet support applying capabilities, so run as root and
-    # let bluetoothd drop uid to bluetooth with the right linux capabilities
-    group bluetooth net_bt_admin misc
-    disabled
+#on property:service.brcm.bt.soft_onoff=0
+#    stop btld
 
 service dhcpcd /system/bin/dhcpcd -B
            group dhcp wifi system bluetooth
@@ -812,6 +768,16 @@ service iprenew_brcm-pan /system/bin/dhcpcd -n
            class main
            disabled
            oneshot
+	   
+service bluetoothd /system/bin/bluetoothd -n
+    class main
+    socket bluetooth stream 660 bluetooth bluetooth
+    socket dbus_bluetooth stream 660 bluetooth bluetooth
+    # init.rc does not yet support applying capabilities, so run as root and
+    # let bluetoothd drop uid to bluetooth with the right linux capabilities
+    group bluetooth net_bt_admin misc
+    disabled
+
     
 #--- BRCM[Excelt], BTL-A
 
@@ -887,24 +853,6 @@ service racoon /system/bin/racoon
     disabled
     oneshot
 
-# [FEATURE_SKY_USIM_GET_ATR_QMI]
-service skypd /system/bin/skypd
-    class late_start #PZ2223, Data Encryption # main
-    user root
-    group radio shell
-# END
-
-service load-modem /system/bin/sh /system/bin/load-modem.sh
-    class late_start
-    user root
-    disabled
-    oneshot
-
-service qcom-modem /system/bin/sh /system/etc/init.qcom.modem_links.sh
-	class late_start
-	user root
-	disabled
-	oneshot
 
 service mtpd /system/bin/mtpd
     class main
@@ -926,32 +874,15 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
-# P12095 / geomagneticd
-service geomagneticd /system/bin/geomagneticd
-    class main
-    user compass
-    group system input
-	
+
 # 2010-12-04 octopusy [FEATURE_SKY_CP_MANAGER_DAEMON_INTERFACE]
 service cpmgrif /system/bin/cpmgrif
-    class late_start
+    class main
     user system
-    group radio qcom_oncrpc shell
+    group radio system qcom_oncrpc shell
 # octopusy END
 
 
-#skytest	// Inserted by dscheon.
-#service skytestserver /system/bin/skytestserver
-#    socket skytest stream 666
-#	user root
-
-# --> FEATURE_SKY_DS_WIFI_IWLAN
-service iwland /system/bin/iwland
-  class main
-  user root
-  group wifi inet radio
-  oneshot
-# <-- FEATURE_SKY_DS_WIFI_IWLAN
 
 # --> FEATURE_SKY_DS_WIFI_DIRECT
 service wlp2pservice /system/bin/wlp2pservice
