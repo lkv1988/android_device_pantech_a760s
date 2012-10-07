@@ -17,7 +17,7 @@ ril.subscription.types=NV,RUIM
 
 ro.ril.update.org.acoustic=1
 ro.telephony.ril.v3=1
-
+ro.telephony.ril_class=SkyQualcommUiccRIL
 DEVICE_PROVISIONED=1
 debug.sf.hw=1
 debug.composition.type=dyn
