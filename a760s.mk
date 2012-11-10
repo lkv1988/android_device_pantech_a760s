@@ -236,6 +236,8 @@ PRODUCT_COPY_FILES += device/pantech/a760s/thermald.conf:system/etc/thermald.con
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
 
+PRODUCT_LOCALES += hdpi
+
 # misc
 PRODUCT_COPY_FILES += \
     device/pantech/a760s/vold.fstab:system/etc/vold.fstab \

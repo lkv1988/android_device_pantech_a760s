@@ -16,6 +16,6 @@ PRODUCT_NAME := cm_a760s
 PRODUCT_DEVICE := a760s
 PRODUCT_MODEL := IM-A760S
 PRODUCT_MANUFACTURER := SKY
-
+PRODUCT_RELEASE_NAME := A760S
 # Release name and versioning
 -include vendor/cm/config/common_versions.mk
