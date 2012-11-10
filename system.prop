@@ -64,9 +64,6 @@ sys.usb.config=mass_storage,adb
 persist.sys.usb.config=mass_storage,adb
 persist.service.adb.enable=1
 
-dalvik.vm.heapsize=64m
-dalvik.vm.dexopt-data-only=1
-
 #
 # system prop for opengles version
 #

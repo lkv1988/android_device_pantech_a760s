@@ -63,7 +63,6 @@ WIFI_DRIVER_MODULE_NAME          := "wlan"
 WIFI_DRIVER_MODULE_ARG           := "firmware_path=/system/etc/wl/bcm43291.bin nvram_path=/system/etc/wl/nvram.txt"
 BOARD_WLAN_DEVICE_REV            := bcm4329
 WIFI_BAND                        := 802_11_ABG
-TARGET_CUSTOM_WIFI := ../../device/pantech/ef33s/wifi/wifi.c
 
 # Audio
 COMMON_GLOBAL_CFLAGS += -DWITH_QCOM_LPA
@@ -89,7 +88,7 @@ TARGET_USES_SF_BYPASS :=true
 TARGET_QCOM_HDMI_OUT := true
 TARGET_USES_ION := true
 
-#TARGET_QCOM_HDMI_RESOLUTION_AUTO := true
+TARGET_QCOM_HDMI_RESOLUTION_AUTO := true
 BOARD_EGL_CFG := device/pantech/a760s/egl.cfg
 
 # Camera
@@ -115,7 +114,6 @@ BOARD_PROVIDES_LIBRIL := true
 TARGET_PROVIDES_RILD := true
 
 TARGET_BOOTLOADER_BOARD_NAME := MSM8660_SURF
-TARGET_PROVIDES_LIBRIL := vendor/pantech/a760s/proprietary/libril.so
 
 #vibrator
 BOARD_HAS_VIBRATOR_IMPLEMENTATION := ../../device/pantech/a760s/vibrator.c
