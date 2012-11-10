@@ -26,7 +26,6 @@ PRODUCT_COPY_FILES += \
 	device/pantech/a760s/ramdisk/init.pantech.usb.rc:root/init.pantech.usb.rc \
 	device/pantech/a760s/ramdisk/init.qcom.rc:root/init.qcom.rc \
 	device/pantech/a760s/ramdisk/init.qcom.sh:root/init.qcom.sh \
-	device/pantech/a760s/ramdisk/init.qcom.usb.rc:root/init.qcom.usb.rc \
 	device/pantech/a760s/ramdisk/init.rc:root/init.rc \
 	device/pantech/a760s/ramdisk/ueventd.qcom.rc:root/ueventd.qcom.rc \
 	device/pantech/a760s/ramdisk/ueventd.rc:root/ueventd.rc

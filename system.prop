@@ -53,13 +53,6 @@ ro.use_data_netmgrd=true
 #
 ro.emmc.sdcard.partition=19
 
-#system props for time-services
-persist.timed.enable=true
-
-# System props for audio
-persist.audio.fluence.mode=endfire
-persist.audio.vr.enable=false
-
 sys.usb.config=mass_storage,adb
 persist.sys.usb.config=mass_storage,adb
 persist.service.adb.enable=1

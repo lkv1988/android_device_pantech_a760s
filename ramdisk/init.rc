@@ -108,18 +108,20 @@ loglevel 3
     write /dev/cpuctl/cpu.rt_runtime_us 950000
     write /dev/cpuctl/cpu.rt_period_us 1000000
 
-    mkdir /dev/cpuctl/fg_boost
-    chown system system /dev/cpuctl/fg_boost/tasks
-    chmod 0777 /dev/cpuctl/fg_boost/tasks
-    write /dev/cpuctl/fg_boost/cpu.shares 1024
+    mkdir /dev/cpuctl/apps
+    chown system system /dev/cpuctl/apps/tasks
+    chmod 0666 /dev/cpuctl/apps/tasks
+    write /dev/cpuctl/apps/cpu.shares 1024
+    write /dev/cpuctl/apps/cpu.rt_runtime_us 800000
+    write /dev/cpuctl/apps/cpu.rt_period_us 1000000
 
-    mkdir /dev/cpuctl/bg_non_interactive
-    chown system system /dev/cpuctl/bg_non_interactive/tasks
-    chmod 0777 /dev/cpuctl/bg_non_interactive/tasks
+    mkdir /dev/cpuctl/apps/bg_non_interactive
+    chown system system /dev/cpuctl/apps/bg_non_interactive/tasks
+    chmod 0666 /dev/cpuctl/apps/bg_non_interactive/tasks
     # 5.0 %
-    write /dev/cpuctl/bg_non_interactive/cpu.shares 52
-    write /dev/cpuctl/bg_non_interactive/cpu.rt_runtime_us 700000
-    write /dev/cpuctl/bg_non_interactive/cpu.rt_period_us 1000000
+    write /dev/cpuctl/apps/bg_non_interactive/cpu.shares 52
+    write /dev/cpuctl/apps/bg_non_interactive/cpu.rt_runtime_us 700000
+    write /dev/cpuctl/apps/bg_non_interactive/cpu.rt_period_us 1000000
 
 # Allow everybody to read the xt_qtaguid resource tracking misc dev.
 # This is needed by any process that uses socket tagging.
@@ -172,7 +174,7 @@ on emmc-fs
 
 on post-fs
     # once everything is setup, no need to modify /
-    mount rootfs rootfs / ro remount
+    mount rootfs rootfs / rw remount
 
     # We chown/chmod /cache again so because mount is run as root + defaults
     chown system system /data
@@ -410,8 +412,6 @@ on boot
     setprop ro.nfc.port "I2C"
     chmod 0600 /dev/pn544
     chown nfc nfc /dev/pn544
-# 2010/06/30 added by Bonghoo
-    setprop dalvik.vm.heapsize 64m
 # 11.05.19 P12232 - Default Ringtone Set
 #    setprop ro.config.ringtone 3D_Tone.ogg
 # Memory management.  Basic kernel parameters, and allow the high
@@ -538,8 +538,8 @@ on boot
 on nonencrypted
     class_start late_start
 
-on charger
-    class_start charger
+#on charger
+#    class_start charger
 
 on property:vold.decrypt=trigger_reset_main
     class_reset main
@@ -561,74 +561,6 @@ on property:vold.decrypt=trigger_shutdown_framework
     class_reset late_start
     class_reset main
 
-# Used to disable USB when switching states
-#on property:sys.usb.config=none
-#    stop adbd
-#    write /sys/class/android_usb/android0/enable 0
-#    write /sys/class/android_usb/android0/bDeviceClass 0
-#    setprop sys.usb.state $sys.usb.config
-
-# For pantech usb_manager composite configuration
-# idVendor, idProduct, each function configuration and enable/disable is configured usb_manager.c in pantech framework.
-# pantech code start...
-on property:sys.usb.config=*
-    write /sys/class/android_usb/android0/functions $sys.usb.config
-    setprop sys.usb.state $sys.usb.config
-
-on property:sys.usb.adb.enable=1
-    start adbd
-
-on property:sys.usb.adb.enable=0
-    stop adbd
-# pantech code end...
-
-# adb only USB configuration
-# This should only be used during device bringup
-# and as a fallback if the USB manager fails to set a standard configuration
-#on property:sys.usb.config=adb
-#    write /sys/class/android_usb/android0/enable 0
-#    write /sys/class/android_usb/android0/idVendor 05C6
-#    write /sys/class/android_usb/android0/idProduct 901D
-#    write /sys/class/android_usb/android0/idVendor 10A9
-#    write /sys/class/android_usb/android0/idProduct 1104
-#    write /sys/class/android_usb/android0/f_diag/clients diag
-#    write /sys/class/android_usb/android0/functions diag,adb
-#    write /sys/class/android_usb/android0/enable 1
-#    start adbd
-#    setprop sys.usb.state $sys.usb.config
-
-
-# USB accessory configuration
-#on property:sys.usb.config=accessory
-#    write /sys/class/android_usb/android0/enable 0
-#    write /sys/class/android_usb/android0/idVendor 18d1
-#    write /sys/class/android_usb/android0/idProduct 2d00
-#    write /sys/class/android_usb/android0/functions $sys.usb.config
-#    write /sys/class/android_usb/android0/enable 1
-#    setprop sys.usb.state $sys.usb.config
-
-# USB accessory configuration, with adb
-#on property:sys.usb.config=accessory,adb
-#    write /sys/class/android_usb/android0/enable 0
-#    write /sys/class/android_usb/android0/idVendor 18d1
-#    write /sys/class/android_usb/android0/idProduct 2d01
-#    write /sys/class/android_usb/android0/functions $sys.usb.config
-#    write /sys/class/android_usb/android0/enable 1
-#    start adbd
-#    setprop sys.usb.state $sys.usb.config
-
-# Used to set USB configuration at boot and to switch the configuration
-# when changing the default configuration
-on property:persist.sys.usb.config=*
-    setprop sys.usb.config $persist.sys.usb.config
-
-#+US1-CF1
-#FEATURE : FW_VENDOR_ENABLE_AT_COMMAND
-    setprop com.android.am.run 0
-    setprop com.android.vending.download 0
-    setprop com.android.pm.install 0
-    setprop com.android.pm.uninstall 0
-#-US1-CF1
 ## Daemon processes to be run by init.
 ##
 service ueventd /sbin/ueventd
@@ -653,18 +585,6 @@ service adbd /sbin/adbd
 # adbd on at boot in emulator
 on property:ro.kernel.qemu=1
     start adbd
-
-# This property trigger has added to imitiate the previous behavior of "adb root".
-# The adb gadget driver used to reset the USB bus when the adbd daemon exited,
-# and the host side adb relied on this behavior to force it to reconnect with the
-# new adbd instance after init relaunches it. So now we force the USB bus to reset
-# here when adbd sets the service.adb.root property to 1.  We also restart adbd here
-# rather than waiting for init to notice its death and restarting it so the timing
-# of USB resetting and adb restarting more closely matches the previous behavior.
-on property:service.adb.root=1
-    write /sys/class/android_usb/android0/enable 0
-    restart adbd
-    write /sys/class/android_usb/android0/enable 1
 
 service servicemanager /system/bin/servicemanager
     class core
@@ -694,7 +614,16 @@ service debuggerd /system/bin/debuggerd
 service pam_server /system/bin/pam_server
     class main
     
+on property:sys.usb.config=*
+    write /sys/class/android_usb/android0/functions ${persist.sys.usb.config}
+    setprop sys.usb.state ${persist.sys.usb.config}
 
+on property:sys.usb.adb.enable=1
+    start adbd
+
+#on property:sys.usb.adb.enable=0
+#    stop adbd
+    
 service ril-daemon /system/bin/rild
     class main
     socket rild stream 660 root radio
