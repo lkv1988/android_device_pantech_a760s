@@ -21,7 +21,7 @@ ro.telephony.ril_class=SkyQualcommUiccRIL
 DEVICE_PROVISIONED=1
 debug.sf.hw=1
 debug.composition.type=dyn
-ro.sf.compbypass.enable=1
+debug.overlayui.enable=1
 
 dev.pm.dyn_samplingrate=1
 debug.sf.reboot=1
@@ -30,7 +30,7 @@ debug.sf.reboot=1
 #
 #lpa.decode=true
 #jmlee Qsound EQ --> LPA Dsiable
-lpa.decode=true
+lpa.decode=false
 lpa.use-stagefright=true
 
 #system props for the MM modules
@@ -88,6 +88,7 @@ ro.vold.switchablepair=/mnt/sdcard,/mnt/emmc
 debug.camera.landscape=true
 
 # qcom display options
-
+debug.enabletr=true
 com.qc.hardware=true
+ro.sf.compbypass.enable=1
 

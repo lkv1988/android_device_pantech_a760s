@@ -252,6 +252,11 @@ case "$target" in
         esac
         ;;
     "msm8660" )
+		case "$baseband" in
+			"msm")
+				start_sensors
+                setprop ro.sf.lcd_density 240
+                start profiler_daemon;;
         platformvalue=`cat /sys/devices/system/soc/soc0/hw_platform`
         case "$platformvalue" in
             "Fluid")

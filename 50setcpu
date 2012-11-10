@@ -1,0 +1,4 @@
+#!/system/bin/sh
+# call userinit.sh and/or userinit.d/* scripts if present in /data/local
+echo ondemand > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
+echo ondemand > /sys/devices/system/cpu/cpu1/cpufreq/scaling_governor
