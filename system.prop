@@ -57,6 +57,8 @@ sys.usb.config=mass_storage,adb
 persist.sys.usb.config=mass_storage,adb
 persist.service.adb.enable=1
 
+ro.vold.umsdirtyratio=20
+
 #
 # system prop for opengles version
 #

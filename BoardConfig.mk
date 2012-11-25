@@ -146,6 +146,8 @@ BOARD_FLASH_BLOCK_SIZE             := 131072
 
 TARGET_PREBUILT_KERNEL := device/pantech/a760s/kernel
 
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/class/android_usb/android0/f_mass_storage/lun%d/file"
+
 BOARD_SDCARD_DEVICE_PRIMARY := /dev/block/mmcblk1p1
 BOARD_SDCARD_DEVICE_SECONDARY := /dev/block/mmcblk0p19
 #BOARD_HAS_NO_SELECT_BUTTON     := true
