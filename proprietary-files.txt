@@ -1,6 +1,7 @@
 battery_charging
 btld
 camera.msm8660.so
+cpmgrif
 eglsubAndroid.so
 libacdbloader.so
 libacdbmapper.so
@@ -8,6 +9,9 @@ libaudcal.so
 libaudioalsa.so
 libC2D2.so
 libcamera_client.so
+libchromatix_imx074_default_video.so
+libchromatix_imx074_preview.so
+libchromatix_imx074_zsl.so
 libdiag.so
 libDivxDrm.so
 libdsi_netctrl.so
@@ -21,6 +25,9 @@ libGLESv2_adreno200.so
 libGLESv2S3D_adreno200.so
 libgsl.so
 libidl.so
+libloc_adapter.so
+libloc_eng.so
+libloc_ext.so
 libmllite.so
 libmlplatform.so
 libmm-color-convertor.so
@@ -65,13 +72,13 @@ mm-qcamera-test
 mm-qcamera-testsuite-client
 mpdecision
 netmgrd
+profiler_daemon
 qmiproxy
 qmuxd
 rild
 rmt_storage
 sensors.msm8660.so
-libloc_eng.so
-libloc_ext.so
+sensors.qcom
 thermald
 usbhub
 usbhub_init
