@@ -200,7 +200,8 @@ PRODUCT_COPY_FILES += \
     device/pantech/a760s/init.qcom.efs.sync.sh:system/etc/init.qcom.efs.sync.sh \
 	device/pantech/a760s/init.qcom.mdm_links.sh:system/etc/init.qcom.mdm_links.sh \
 	device/pantech/a760s/init.qcom.modem_links.sh:system/etc/init.qcom.modem_links.sh \
-	device/pantech/a760s/50setcpu:system/etc/init.d/50setcpu
+	device/pantech/a760s/50setcpu:system/etc/init.d/50setcpu \
+	device/pantech/a760s/audio_policy.conf:system/etc/audio_policy.conf
 
 # idc
 PRODUCT_COPY_FILES += \
@@ -244,7 +245,8 @@ PRODUCT_COPY_FILES += \
 $(call inherit-product-if-exists, vendor/pantech/a760s/a760s-vendor.mk)
 
 PRODUCT_COPY_FILES += \
-     device/pantech/a760s/media_profiles.xml:system/etc/media_profiles.xml
+     device/pantech/a760s/media_profiles.xml:system/etc/media_profiles.xml \
+	device/pantech/a760s/media_codecs.xml:system/etc/media_codecs.xml
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
