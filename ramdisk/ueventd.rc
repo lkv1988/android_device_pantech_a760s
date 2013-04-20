@@ -16,7 +16,7 @@
 /dev/msm_hw3dc            0666   root       root
 
 # the DIAG device node is world writable/readable.
-/dev/diag                 0666   root       root
+/dev/diag                 0666   radio       radio
 
 # the genlock client device node is world writable/readable.
 /dev/genlock              0666   root      root

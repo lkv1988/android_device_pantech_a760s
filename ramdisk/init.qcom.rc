@@ -297,6 +297,18 @@ service sensors /system/bin/sensors.qcom
     group root
     disabled
 
+service mpdecision /system/bin/mpdecision
+	class late_start
+	user root
+	group root
+	disabled
+
+service thermald /system/bin/thermald
+	class later_start
+	user root
+	group root
+	disabled
+
 on property:ro.use_data_netmgrd=false
     # netmgr not supported on specific target
     stop netmgrd

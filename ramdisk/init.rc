@@ -31,7 +31,7 @@ loglevel 3
     export ANDROID_ROOT /system
     export ANDROID_ASSETS /system/app
     export ANDROID_DATA /data
-    export EXTERNAL_STORAGE /mnt/sdcard
+    export EXTERNAL_STORAGE /mnt/emmc
     export ASEC_MOUNTPOINT /mnt/asec
     export LOOP_MOUNTPOINT /mnt/obb
     export BOOTCLASSPATH /system/framework/core.jar:/system/framework/core-junit.jar:/system/framework/bouncycastle.jar:/system/framework/ext.jar:/system/framework/framework.jar:/system/framework/framework2.jar:/system/framework/android.policy.jar:/system/framework/services.jar:/system/framework/apache-xml.jar
@@ -617,6 +617,7 @@ service pam_server /system/bin/pam_server
 on property:sys.usb.config=*
     write /sys/class/android_usb/android0/functions ${persist.sys.usb.config}
     setprop sys.usb.state ${persist.sys.usb.config}
+    start adbd
 
 on property:sys.usb.adb.enable=1
     start adbd
